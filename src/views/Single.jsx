@@ -12,6 +12,7 @@ const Single = () => {
   return (
     <div open={item !== null}>
       <h1>{item.title}</h1>
+      <h3>{item.username}</h3>
       <p>{item.description}</p>
       <img src={item.thumbnail} alt={item.title} />
 

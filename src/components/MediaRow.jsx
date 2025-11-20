@@ -10,6 +10,7 @@ const MediaRow = (props) => {
 
   return (
     <tr key={item.media_id}>
+      <td>{item.username}</td>
       <td>
         <img src={item.thumbnail} alt={item.title} />
       </td>
