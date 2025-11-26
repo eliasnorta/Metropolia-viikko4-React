@@ -1,4 +1,4 @@
-Open [link](https://users.metropolia.fi/~nortae/custom-hooks/dist/) to view it in the browser.
+Open [link](https://users.metropolia.fi/~nortae/forms/dist) to view it in the browser.
 
 # React + Vite
 
