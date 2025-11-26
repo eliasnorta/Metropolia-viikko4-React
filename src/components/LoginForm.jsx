@@ -2,10 +2,12 @@ import React, {use} from 'react';
 import useForm from '../hooks/formHooks';
 import {useAuthentication} from '../hooks/apiHooks';
 import {useNavigate} from 'react-router';
+import {useUserContext} from '../hooks/contextHooks';
 
 const LoginForm = () => {
   const navigate = useNavigate();
   const {postLogin} = useAuthentication();
+  const {handleLogin} = useUserContext();
 
   const initValues = {
     username: '',
@@ -14,15 +16,9 @@ const LoginForm = () => {
 
   const doLogin = async () => {
     try {
-      const result = await postLogin(inputs);
-      console.log('Login result:', result);
-
-      // Redirect to Home on successful login
-      if (result && result.token) {
-        navigate('/');
-      }
-    } catch (error) {
-      console.error('Login error:', error);
+      handleLogin(inputs);
+    } catch (e) {
+      alert(e.message);
     }
   };
 
