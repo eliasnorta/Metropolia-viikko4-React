@@ -33,24 +33,26 @@ const Profile = () => {
   }
 
   return (
-    <div>
-      <h1>Profile</h1>
-      <p>
-        <strong>Username:</strong> {userData.username}
-      </p>
-      <p>
-        <strong>Email:</strong> {userData.email}
-      </p>
-      <p>
-        <strong>User ID:</strong> {userData.user_id}
-      </p>
-      <p>
-        <strong>Level:</strong> {userData.level_name}
-      </p>
-      <p>
-        <strong>Created:</strong>{' '}
-        {new Date(userData.created_at).toLocaleString()}
-      </p>
+    <div className="py-10">
+      <h1 className="text-center pb-10">Profile</h1>
+      <div className="flex flex-col gap-10 border border-grey p-20 *:text-xl">
+        <p>
+          <strong>Username:</strong> {userData.username}
+        </p>
+        <p>
+          <strong>Email:</strong> {userData.email}
+        </p>
+        <p>
+          <strong>User ID:</strong> {userData.user_id}
+        </p>
+        <p>
+          <strong>Level:</strong> {userData.level_name}
+        </p>
+        <p>
+          <strong>Created:</strong>{' '}
+          {new Date(userData.created_at).toLocaleString()}
+        </p>
+      </div>
     </div>
   );
 };

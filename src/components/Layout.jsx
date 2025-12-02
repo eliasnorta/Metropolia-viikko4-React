@@ -1,10 +1,10 @@
-import React, { useContext, useEffect } from 'react';
+import React, {useContext, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {Link, Outlet} from 'react-router';
-import { UserContext } from '../contexts/UserContext';
+import {UserContext} from '../contexts/UserContext';
 
 const Layout = (props) => {
-  const { user, handleAutoLogin } = useContext(UserContext);
+  const {user, handleAutoLogin} = useContext(UserContext);
 
   useEffect(() => {
     handleAutoLogin();
@@ -14,7 +14,7 @@ const Layout = (props) => {
     <div>
       <div>
         <nav>
-          <ul>
+          <ul className="flex justify-end bg-[#333333] m-0 p-0 **:text-white  **:hover:bg-[#111111] **:p-4">
             <li>
               <Link to="/">Home</Link>
             </li>
