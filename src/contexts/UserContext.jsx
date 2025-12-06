@@ -44,7 +44,6 @@ const UserProvider = ({children}) => {
     }
   };
 
-  // handleAutoLogin is used when the app is loaded to check if there is a valid token in local storage
   const handleAutoLogin = async () => {
     try {
       const token = localStorage.getItem('token');

@@ -18,7 +18,6 @@ const RegisterForm = () => {
       const result = await postUser(inputs);
       console.log('register result:', result);
 
-      // Redirect to Home on successful register
       if (result && result.token) {
         navigate('/');
       }

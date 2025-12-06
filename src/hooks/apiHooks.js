@@ -78,15 +78,20 @@ const useMedia = () => {
     }
   };
 
-  const modifyMedia = async (mediaId, updateOptions, token) => {
+  const modifyMedia = async (mediaId, inputs, token) => {
     try {
+      const updateData = {
+        title: inputs.title,
+        description: inputs.description,
+      };
+
       const fetchOptions = {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body,
+        body: JSON.stringify(updateData),
       };
 
       const mediaResult = await fetchData(
@@ -108,7 +113,7 @@ const useMedia = () => {
 
   console.log(mediaArray);
 
-  return {mediaArray, postMedia, deleteMedia};
+  return {mediaArray, postMedia, deleteMedia, modifyMedia};
 };
 
 const useAuthentication = () => {

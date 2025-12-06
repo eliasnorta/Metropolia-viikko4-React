@@ -1,12 +1,13 @@
 import PropTypes from 'prop-types';
 import {useUserContext} from '../hooks/contextHooks';
-import {useMedia} from '../hooks/apiHooks';
 import {Link, useNavigate} from 'react-router';
+import {useState} from 'react';
+import EditModal from './EditModal';
 
 const MediaRow = (props) => {
-  const {item} = props;
+  const {item, deleteMedia, modifyMedia} = props;
   const {user} = useUserContext();
-  const {deleteMedia} = useMedia();
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleDelete = async () => {
@@ -18,52 +19,84 @@ const MediaRow = (props) => {
         navigate(0);
       } catch (error) {
         console.error('Error deleting media:', error);
-        alert('Failed to delete media. Please try again.');
+        alert('Cannot delete media');
       }
+    }
+  };
+
+  const handleUpdate = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleModify = async (updatedData) => {
+    try {
+      const token = localStorage.getItem('token');
+      await modifyMedia(item.media_id, updatedData, token);
+      alert('Media updated successfully!');
+      navigate(0);
+    } catch (error) {
+      console.error('Error updating media:', error);
+      alert('Cannot update media');
     }
   };
 
   MediaRow.propTypes = {
     item: PropTypes.object.isRequired,
+    deleteMedia: PropTypes.func.isRequired,
+    modifyMedia: PropTypes.func.isRequired,
   };
 
   return (
-    <tr key={item.media_id}>
-      <td>{item.username}</td>
-      <td>
-        <img src={item.thumbnail} alt={item.title} />
-      </td>
-      <td>{item.title}</td>
-      <td>{item.description}</td>
-      <td>{new Date(item.created_at).toLocaleString('fi-FI')}</td>
-      <td>{item.filesize}</td>
-      <td>{item.media_type}</td>
-      <td>
-        <Link to="/single" state={{item}}>
-          Show
-        </Link>
-      </td>
-      {user && (
-        <>
-          <td>
-            <button
-              className="your tailwind classes here"
-              onClick={() => console.log('modify', item)}
-            >
-              Modify
-            </button>
-          </td>
-          <td>
-            <button
-              className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-              onClick={handleDelete}
-            >
-              Delete
-            </button>
-          </td>
-        </>
-      )}
-    </tr>
+    <>
+      <tr key={item.media_id}>
+        <td>{item.username}</td>
+        <td>
+          <img src={item.thumbnail} alt={item.title} />
+        </td>
+        <td>{item.title}</td>
+        <td>{item.description}</td>
+        <td>{new Date(item.created_at).toLocaleString('fi-FI')}</td>
+        <td>{item.filesize}</td>
+        <td>{item.media_type}</td>
+        <td>
+          <Link
+            to="/single"
+            state={{item}}
+            className="bg-[#363636] p-2 hover:bg-black"
+          >
+            Show
+          </Link>
+        </td>
+        {user && (
+          <>
+            <td>
+              <button
+                className="bg-[#363636] p-1 hover:bg-black cursor-pointer"
+                onClick={handleUpdate}
+              >
+                Modify
+              </button>
+            </td>
+            <td>
+              <button
+                className="bg-[#363636] p-1 hover:bg-black cursor-pointer"
+                onClick={handleDelete}
+              >
+                Delete
+              </button>
+            </td>
+          </>
+        )}
+      </tr>
+
+      <EditModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        item={item}
+        onSave={handleModify}
+        modifyMedia={modifyMedia}
+      />
+    </>
   );
 };
 
