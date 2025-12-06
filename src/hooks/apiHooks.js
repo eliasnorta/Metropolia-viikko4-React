@@ -1,4 +1,3 @@
-// TODO: add necessary imports
 import fetchData from '../utils/fetchData';
 import {useEffect, useState} from 'react';
 
@@ -26,7 +25,6 @@ const useMedia = () => {
 
   const postMedia = async (fileData, inputs, token) => {
     try {
-      // Create media object for the API (without media_id, user_id, thumbnail, created_at)
       const mediaData = {
         filename: fileData.filename,
         media_type: fileData.media_type,
@@ -57,13 +55,60 @@ const useMedia = () => {
     }
   };
 
+  const deleteMedia = async (mediaId, token) => {
+    try {
+      const fetchOptions = {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const mediaResult = await fetchData(
+        import.meta.env.VITE_MEDIA_API + '/media/' + mediaId,
+        fetchOptions,
+      );
+      console.log('Media result:', mediaResult);
+
+      return mediaResult;
+    } catch (error) {
+      console.error('Media delete error:', error);
+      throw error;
+    }
+  };
+
+  const modifyMedia = async (mediaId, updateOptions, token) => {
+    try {
+      const fetchOptions = {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body,
+      };
+
+      const mediaResult = await fetchData(
+        import.meta.env.VITE_MEDIA_API + '/media/' + mediaId,
+        fetchOptions,
+      );
+      console.log('Media result:', mediaResult);
+
+      return mediaResult;
+    } catch (error) {
+      console.error('Media put error:', error);
+      throw error;
+    }
+  };
+
   useEffect(() => {
     getMedia();
   }, []);
 
   console.log(mediaArray);
 
-  return {mediaArray, postMedia};
+  return {mediaArray, postMedia, deleteMedia};
 };
 
 const useAuthentication = () => {

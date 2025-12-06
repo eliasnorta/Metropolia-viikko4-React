@@ -1,8 +1,27 @@
 import PropTypes from 'prop-types';
-import {Link} from 'react-router';
+import {useUserContext} from '../hooks/contextHooks';
+import {useMedia} from '../hooks/apiHooks';
+import {Link, useNavigate} from 'react-router';
 
 const MediaRow = (props) => {
   const {item} = props;
+  const {user} = useUserContext();
+  const {deleteMedia} = useMedia();
+  const navigate = useNavigate();
+
+  const handleDelete = async () => {
+    if (window.confirm('Are you sure you want to delete this media?')) {
+      try {
+        const token = localStorage.getItem('token');
+        const result = await deleteMedia(item.media_id, token);
+        alert('Media deleted successfully!');
+        navigate(0);
+      } catch (error) {
+        console.error('Error deleting media:', error);
+        alert('Failed to delete media. Please try again.');
+      }
+    }
+  };
 
   MediaRow.propTypes = {
     item: PropTypes.object.isRequired,
@@ -24,6 +43,26 @@ const MediaRow = (props) => {
           Show
         </Link>
       </td>
+      {user && (
+        <>
+          <td>
+            <button
+              className="your tailwind classes here"
+              onClick={() => console.log('modify', item)}
+            >
+              Modify
+            </button>
+          </td>
+          <td>
+            <button
+              className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+              onClick={handleDelete}
+            >
+              Delete
+            </button>
+          </td>
+        </>
+      )}
     </tr>
   );
 };
