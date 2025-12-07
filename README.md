@@ -1,4 +1,4 @@
-Open [link](https://users.metropolia.fi/~nortae/upload/dist) to view it in the browser.
+Open [link](https://users.metropolia.fi/~nortae/tailwind/dist) to view it in the browser.
 
 # React + Vite
 

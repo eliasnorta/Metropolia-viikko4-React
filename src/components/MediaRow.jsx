@@ -3,9 +3,18 @@ import {useUserContext} from '../hooks/contextHooks';
 import {Link, useNavigate} from 'react-router';
 import {useState} from 'react';
 import EditModal from './EditModal';
+import Likes from './Likes';
 
 const MediaRow = (props) => {
-  const {item, deleteMedia, modifyMedia} = props;
+  const {
+    item,
+    deleteMedia,
+    modifyMedia,
+    postLike,
+    deleteLike,
+    getLikeCountByMediaId,
+    getLikeByUser,
+  } = props;
   const {user} = useUserContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
@@ -44,6 +53,10 @@ const MediaRow = (props) => {
     item: PropTypes.object.isRequired,
     deleteMedia: PropTypes.func.isRequired,
     modifyMedia: PropTypes.func.isRequired,
+    postLike: PropTypes.func.isRequired,
+    deleteLike: PropTypes.func.isRequired,
+    getLikeCountByMediaId: PropTypes.func.isRequired,
+    getLikeByUser: PropTypes.func.isRequired,
   };
 
   return (
@@ -84,6 +97,15 @@ const MediaRow = (props) => {
               >
                 Delete
               </button>
+            </td>
+            <td>
+              <Likes
+                mediaId={item.media_id}
+                postLike={postLike}
+                deleteLike={deleteLike}
+                getLikeCountByMediaId={getLikeCountByMediaId}
+                getLikeByUser={getLikeByUser}
+              />
             </td>
           </>
         )}

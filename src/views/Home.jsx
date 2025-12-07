@@ -1,11 +1,16 @@
 import {useEffect, useState} from 'react';
 import MediaRow from '../components/MediaRow';
 import {useMedia} from '../hooks/apiHooks';
+import {useLike} from '../hooks/apiHooks';
+import {useUserContext} from '../hooks/contextHooks';
 
 const Home = () => {
   const [selectedItem, setSelectedItem] = useState(null);
+  const {user} = useUserContext();
 
   const {mediaArray, deleteMedia, modifyMedia} = useMedia();
+  const {postLike, deleteLike, getLikeCountByMediaId, getLikeByUser} =
+    useLike();
 
   return (
     <>
@@ -16,7 +21,8 @@ const Home = () => {
                [&_th]:border-gray-300 [&_td]:border-gray-300
                [&_th]:px-4 [&_td]:px-4
                [&_th]:py-2 [&_td]:py-2
-               border border-gray-300"
+               border border-gray-300
+               [&_td]:max-w-xs"
       >
         <thead>
           <tr>
@@ -28,6 +34,13 @@ const Home = () => {
             <th>Size</th>
             <th>Type</th>
             <th></th>
+            {user && (
+              <>
+                <th></th>
+                <th></th>
+                <th></th>
+              </>
+            )}
           </tr>
         </thead>
         <tbody>
@@ -37,6 +50,10 @@ const Home = () => {
               item={item}
               deleteMedia={deleteMedia}
               modifyMedia={modifyMedia}
+              postLike={postLike}
+              deleteLike={deleteLike}
+              getLikeCountByMediaId={getLikeCountByMediaId}
+              getLikeByUser={getLikeByUser}
             />
           ))}
         </tbody>

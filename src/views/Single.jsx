@@ -2,15 +2,30 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {useLocation} from 'react-router';
 import {useNavigate} from 'react-router';
+import Likes from '../components/Likes';
+import {useUserContext} from '../hooks/contextHooks';
+import {useLike} from '../hooks/apiHooks';
 
 const Single = () => {
   const {state} = useLocation();
   const item = state.item;
+  const {user} = useUserContext();
+  const {postLike, deleteLike, getLikeCountByMediaId, getLikeByUser} =
+    useLike();
 
   const navigate = useNavigate();
 
   return (
     <div open={item !== null}>
+      {user && (
+        <Likes
+          mediaId={item.media_id}
+          postLike={postLike}
+          deleteLike={deleteLike}
+          getLikeCountByMediaId={getLikeCountByMediaId}
+          getLikeByUser={getLikeByUser}
+        />
+      )}
       <h1>{item.title}</h1>
       <h3>{item.username}</h3>
       <p>{item.description}</p>

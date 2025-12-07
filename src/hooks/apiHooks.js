@@ -116,6 +116,107 @@ const useMedia = () => {
   return {mediaArray, postMedia, deleteMedia, modifyMedia};
 };
 
+const useLike = () => {
+  const postLike = async (mediaId, token) => {
+    try {
+      const fetchOptions = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({media_id: parseInt(mediaId)}),
+      };
+
+      const mediaResult = await fetchData(
+        import.meta.env.VITE_MEDIA_API + '/likes',
+        fetchOptions,
+      );
+      console.log('Like result:', mediaResult);
+
+      return mediaResult;
+    } catch (error) {
+      console.error('Media like error:', error);
+      throw error;
+    }
+  };
+
+  const deleteLike = async (likeId, token) => {
+    try {
+      const fetchOptions = {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const mediaResult = await fetchData(
+        import.meta.env.VITE_MEDIA_API + '/likes/' + likeId,
+        fetchOptions,
+      );
+      console.log('Like result:', mediaResult);
+
+      return mediaResult;
+    } catch (error) {
+      console.error('Media like error:', error);
+      throw error;
+    }
+  };
+
+  const getLikeCountByMediaId = async (mediaId) => {
+    try {
+      const fetchOptions = {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      };
+
+      const mediaResult = await fetchData(
+        import.meta.env.VITE_MEDIA_API + '/likes/count/' + mediaId,
+        fetchOptions,
+      );
+      return mediaResult;
+    } catch (error) {
+      console.error('Media like error:', error);
+      throw error;
+    }
+  };
+
+  const getLikeByUser = async (mediaId, userId, token) => {
+    try {
+      const fetchOptions = {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const userLikes = await fetchData(
+        import.meta.env.VITE_MEDIA_API + '/likes/byuser/' + userId,
+        fetchOptions,
+      );
+
+      // Check if the user liked the specific media item
+      if (Array.isArray(userLikes)) {
+        const userLike = userLikes.find(
+          (like) => like.media_id === parseInt(mediaId),
+        );
+        return userLike || null;
+      }
+
+      return null;
+    } catch (error) {
+      console.error('Media like error:', error);
+      throw error;
+    }
+  };
+
+  return {postLike, deleteLike, getLikeCountByMediaId, getLikeByUser};
+};
+
 const useAuthentication = () => {
   const postLogin = async (inputs) => {
     try {
@@ -226,4 +327,4 @@ const useFile = () => {
   return {postFile};
 };
 
-export {useMedia, useAuthentication, useUser, useFile};
+export {useMedia, useLike, useAuthentication, useUser, useFile};

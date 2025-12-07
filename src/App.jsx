@@ -33,14 +33,7 @@ const App = () => {
                 </ProtectedRoute>
               }
             />
-            <Route
-              path="/single"
-              element={
-                <ProtectedRoute>
-                  <Single />
-                </ProtectedRoute>
-              }
-            />
+            <Route path="/single" element={<Single />} />
             <Route path="/login" element={<Login />} />
             <Route
               path="/logout"
